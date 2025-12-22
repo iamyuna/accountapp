@@ -1,6 +1,6 @@
 import AccountItem from "./AccountItem";
 
-export default function AccountItems(){
+export default function AccountItems({accounts}){
 
     return(
         <div>
@@ -9,7 +9,9 @@ export default function AccountItems(){
                 <span>5,000원</span>
             </div>
             <ul>
-                <AccountItem/>
+                {accounts.map((item) => (
+                    <AccountItem key={item.id} item={item}/>
+                ))}
             </ul>
         </div>
     );

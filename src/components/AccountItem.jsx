@@ -1,15 +1,17 @@
 import { Link } from "react-router";
+import { useAccountStore } from "../store/useAccountStore";
 
-export default function AccountItem(){
+export default function AccountItem({item}){
+    const deleteAccount = useAccountStore(state => state.deleteAccount);
 
     return(
         <li>
             <div>
                 <Link to="/edit">수정</Link>
-                <button>삭제</button>
-                <p>편의점</p>
+                <button onClick={() => deleteAccount(item.id)}>삭제</button>
+                <p>{item.memo}</p>
             </div>
-            <span>5,000원</span>
+            <span>{item.price}</span>
         </li>
     );
 }
