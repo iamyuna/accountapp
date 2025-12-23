@@ -8,8 +8,8 @@ import { useAccountStore } from "../store/useAccountStore";
 export default function AccountList(){
     const accounts = useAccountStore(state => state.accounts);
 
-    const [keyword, setKeyword] = useState("");
     const [sortList, setSortList] = useState("newest");
+    const [keyword, setKeyword] = useState("");
 
     const filteredAccounts = useMemo(() => {
         return accounts
@@ -31,11 +31,11 @@ export default function AccountList(){
         <div>
             <AccountHeader accounts={accounts}/>
             {accounts.length === 0 ? (
-                <p>등록된 항목이 없습니다.</p>
+                <p className="text-[#a9a9a9] text-center py-[180px]">등록된 항목이 없습니다.</p>
             ) : (
-                <div>
-                    <AccountSort sortList={sortList} toggleSort={toggleSort}/>
+                <div className="p-[20px]">
                     <AccountSearch keyword={keyword} setKeyword={setKeyword}/>
+                    <AccountSort sortList={sortList} toggleSort={toggleSort}/>
                     <AccountItems accounts={filteredAccounts}/>
                 </div>
             )}
