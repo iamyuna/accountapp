@@ -9,7 +9,7 @@ export default function AccountList(){
 
     return(
         <div>
-            <AccountHeader/>
+            <AccountHeader accounts={accounts}/>
             <AccountSort/>
             <AccountSearch/>
             <AccountItems accounts={accounts}/>

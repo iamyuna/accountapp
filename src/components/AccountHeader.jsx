@@ -1,6 +1,9 @@
 import { Link } from "react-router";
+import { useAccountStore } from "../store/useAccountStore";
 
-export default function AccountHeader(){
+export default function AccountHeader({accounts}){
+    const totalCount = accounts.length;
+    const totalPrice = accounts.reduce((acc, item) => acc + Number(item.price), 0).toLocaleString();
 
     return(
         <div>
@@ -11,11 +14,11 @@ export default function AccountHeader(){
                 <ul>
                     <li>
                         <p>소비건수</p>
-                        <strong>12</strong>
+                        <strong>{totalCount}</strong>
                     </li>
                     <li>
                         <p>소비금액</p>
-                        <strong>50,000</strong>
+                        <strong>{totalPrice}</strong>
                     </li>
                 </ul>
             </div>
