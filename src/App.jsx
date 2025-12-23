@@ -13,7 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<AccountList/>}/>
             <Route path="/write" element={<AccountWrite/>}/>
-            <Route path="/edit" element={<AccountEdit/>}/>
+            <Route path="/edit/:id" element={<AccountEdit/>}/>
           </Routes>
         </div>
       </div>

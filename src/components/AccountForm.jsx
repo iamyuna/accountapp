@@ -1,10 +1,20 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useAccountStore } from "../store/useAccountStore";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function AccountForm(){
-    const addAccount = useAccountStore(state => state.addAccount);
     const navigate = useNavigate();
+    const {id} = useParams();
+
+    const accounts = useAccountStore(state => state.accounts);
+    const addAccount = useAccountStore(state => state.addAccount);
+    const updateAccount = useAccountStore(state => state.updateAccount);
+
+    const [editId, setEditId] = useState(null);
+
+    const target = useMemo(() => {
+        return accounts.find(item => item.id === Number(id));
+    }, [accounts, id]);
 
     const [form, setForm] = useState({
         date: "",
@@ -13,13 +23,31 @@ export default function AccountForm(){
         etc: "",
     });
 
+    useEffect(() => {
+        if(!target) return;
+
+        setForm({
+            date: target.date,
+            price: target.price,
+            memo: target.memo,
+            etc: target.etc,
+        });
+    }, [target]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        addAccount({
+        const accountData = {
+            id: target ? target.id : Date.now(),
             ...form,
-            id: Date.now(),
-        });
+            price: Number(form.price),
+        }
+
+        if(target){
+            updateAccount(accountData) 
+        }else {
+            addAccount(accountData);
+        }
 
         navigate("/");
     };
@@ -53,7 +81,7 @@ export default function AccountForm(){
                 />
             </div>
             <div className="flex items-end mt-[10px]">
-                <labe className="block w-[100px] text-[1.1rem] text-[#656565] pb-[10px]"l>내용</labe>
+                <label className="block w-[100px] text-[1.1rem] text-[#656565] pb-[10px]">내용</label>
                 <input 
                     type="text" 
                     name="memo"

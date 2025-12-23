@@ -16,5 +16,12 @@ export const useAccountStore = create((set, get) => {
             saveStorage(STORAGE_KEY, nextState);
             set({accounts: nextState});
         },
+        updateAccount: (updateItem) => {
+            const nextState = get().accounts.map((item) => 
+                item.id === updateItem.id ? updateItem : item
+            );
+            saveStorage(STORAGE_KEY, nextState);
+            set({accounts: nextState});
+        },
     };
 });

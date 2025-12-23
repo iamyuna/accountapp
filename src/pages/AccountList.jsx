@@ -29,7 +29,7 @@ export default function AccountList(){
 
     return(
         <div>
-            <AccountHeader accounts={accounts}/>
+            <AccountHeader accounts={filteredAccounts}/>
             {accounts.length === 0 ? (
                 <p className="text-[#a9a9a9] text-center py-[180px]">등록된 항목이 없습니다.</p>
             ) : (
