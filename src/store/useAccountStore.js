@@ -4,24 +4,27 @@ import { loadStorage, saveStorage } from "../utils/storage";
 const STORAGE_KEY =  "account_storage";
 
 export const useAccountStore = create((set, get) => {
+    const sync = (next) => {
+        saveStorage(STORAGE_KEY, next);
+        set({accounts: next});
+    };
     return {
         accounts: loadStorage(STORAGE_KEY),
         addAccount: (account) => {
-            const nextState = [...get().accounts, account];
-            saveStorage(STORAGE_KEY, nextState);
-            set({accounts: nextState});
+            const next = [...get().accounts, account];
+            sync(next);
         },
         deleteAccount: (id) => {
-            const nextState = get().accounts.filter(item => item.id !== id);
-            saveStorage(STORAGE_KEY, nextState);
-            set({accounts: nextState});
+            const next = get().accounts.filter(item => item.id !== id);
+            sync(next);
         },
         updateAccount: (updateItem) => {
-            const nextState = get().accounts.map((item) => 
-                item.id === updateItem.id ? updateItem : item
+            const next = get().accounts.map((item) => 
+                item.id === updateItem.id 
+                ? {...item, ...updateItem} 
+                : item
             );
-            saveStorage(STORAGE_KEY, nextState);
-            set({accounts: nextState});
+            sync(next);
         },
     };
 });
