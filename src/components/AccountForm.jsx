@@ -1,55 +1,24 @@
-import { Link, useNavigate, useParams } from "react-router";
-import { useAccountStore } from "../store/useAccountStore";
-import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router";
+import { useEffect, useState } from "react";
 
-export default function AccountForm(){
-    const navigate = useNavigate();
-    const {id} = useParams();
-
-    const accounts = useAccountStore(state => state.accounts);
-    const addAccount = useAccountStore(state => state.addAccount);
-    const updateAccount = useAccountStore(state => state.updateAccount);
-
-    const [editId, setEditId] = useState(null);
-
-    const target = useMemo(() => {
-        return accounts.find(item => item.id === Number(id));
-    }, [accounts, id]);
-
-    const [form, setForm] = useState({
-        date: "",
+export default function AccountForm({onSubmit, initialData}){
+  const [form, setForm] = useState({
+        id: "",
+        date: new Date().toISOString().slice(0, 10),
         price: "",
         memo: "",
         etc: "",
     });
 
     useEffect(() => {
-        if(!target) return;
-
-        setForm({
-            date: target.date,
-            price: target.price,
-            memo: target.memo,
-            etc: target.etc,
-        });
-    }, [target]);
+        if(initialData){
+            setForm(initialData);
+        }
+    }, [initialData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        const accountData = {
-            id: target ? target.id : Date.now(),
-            ...form,
-            price: Number(form.price),
-        }
-
-        if(target){
-            updateAccount(accountData) 
-        }else {
-            addAccount(accountData);
-        }
-
-        navigate("/");
+        onSubmit(form);
     };
 
     const handleChange = (e) => {

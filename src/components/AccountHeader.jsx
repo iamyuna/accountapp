@@ -1,9 +1,17 @@
 import { Link } from "react-router";
 import { useAccountStore } from "../store/useAccountStore";
+import { useMemo } from "react";
 
 export default function AccountHeader({accounts}){
-    const totalCount = accounts.length;
-    const totalPrice = accounts.reduce((acc, item) => acc + Number(item.price), 0).toLocaleString();
+    const {totalCount, totalPrice} = useMemo(() => {
+        const totalCount = accounts.length;
+        const totalPrice = accounts.reduce((acc, item) => acc + Number(item.price), 0);
+
+        return {
+            totalCount,
+            totalPrice: totalPrice.toLocaleString(),
+        };
+    }, [accounts]);
 
     return(
         <div>
